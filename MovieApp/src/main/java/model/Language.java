@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 
+/**
+ * Represents a language entity in the database.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -63,13 +63,11 @@ CREATE TABLE sessions (
 
 );
 
-
+-- Table: UserSession
 CREATE TABLE customerSessions (
     id BIGINT NOT NULL PRIMARY KEY DEFAULT nextval('customerSession1'),
     session_id BIGINT  NOT NULL,
     customer_id BIGINT  NOT NULL,
-    rowNr int  NOT NULL,
-    seatNr int  NOT NULL,
     FOREIGN KEY (session_id)
         REFERENCES sessions ON DELETE CASCADE,
     FOREIGN KEY (customer_id)

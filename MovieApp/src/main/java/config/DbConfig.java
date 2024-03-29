@@ -19,11 +19,20 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Configuration class for database-related settings.
+ */
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:/application.properties")
 public class DbConfig {
 
+    /**
+     * Configures the data source for the database.
+     *
+     * @param env The environment object to retrieve properties
+     * @return The configured DataSource object
+     */
     @Bean
     public DataSource dataSource(Environment env) {
         DriverManagerDataSource ds = new DriverManagerDataSource();
@@ -32,21 +41,35 @@ public class DbConfig {
         return ds;
     }
 
+    /**
+     * Defines the SQL dialect to be used by Hibernate.
+     *
+     * @return The SQL dialect
+     */
     @Bean
     public String dialect() {
         return "org.hibernate.dialect.HSQLDialect";
     }
 
+    /**
+     * Configures the EntityManagerFactory.
+     *
+     * @param dataSource The configured DataSource object
+     * @param dialect    The SQL dialect to be used by Hibernate
+     * @return The configured EntityManagerFactory object
+     */
     @Bean
     public EntityManagerFactory entityManagerFactory(
             DataSource dataSource,
             @Qualifier("dialect") String  dialect) {
 
+        // Initializes the database using the schema.sql file
         var populator = new ResourceDatabasePopulator(
                 new ClassPathResource("schema.sql"));
 
         DatabasePopulatorUtils.execute(populator, dataSource);
 
+        // Configures the EntityManagerFactory
         LocalContainerEntityManagerFactoryBean factory =
                 new LocalContainerEntityManagerFactoryBean();
         factory.setPersistenceProviderClass(
@@ -59,6 +82,12 @@ public class DbConfig {
         return factory.getObject();
     }
 
+    /**
+     * Configures the transaction manager.
+     *
+     * @param entityManagerFactory The configured EntityManagerFactory object
+     * @return The configured PlatformTransactionManager object
+     */
     @Bean
     public PlatformTransactionManager transactionManager(
             EntityManagerFactory entityManagerFactory) {
@@ -66,6 +95,12 @@ public class DbConfig {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
+    /**
+     * Defines additional properties for Hibernate.
+     *
+     * @param dialect The SQL dialect to be used by Hibernate
+     * @return The additional Hibernate properties
+     */
     private Properties additionalProperties(String dialect) {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");

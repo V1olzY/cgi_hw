@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
-import lombok.RequiredArgsConstructor;
 
+/**
+ * Represents a genre entity in the database.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

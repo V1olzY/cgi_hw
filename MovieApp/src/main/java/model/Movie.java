@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Represents a movie entity in the database.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,4 +42,7 @@ public class Movie {
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private List<Genre> genres;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<Session> sessions;
 }

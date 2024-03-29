@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Represents a customer entity in the database.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,15 +34,12 @@ public class Customer {
     @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-//    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    // Relationship mapping with sessions - many-to-many
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "customerSeesion",
-            joinColumns = @JoinColumn(name = "customer_id"),
-            inverseJoinColumns = @JoinColumn(name = "session_id")
-)
-    private List<Session> history;
-
-
-
+            name = "customerSeesion", // Join table name
+            joinColumns = @JoinColumn(name = "customer_id"), // FK column in join table for Customer
+            inverseJoinColumns = @JoinColumn(name = "session_id") // FK column in join table for Session
+    )
+    private List<Session> history; // List of sessions associated with the customer
 }
